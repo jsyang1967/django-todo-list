@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="row">
+    <div class="col">
+      <h1>#{{ todo.id }} {{ todo.title }}</h1>
+      <hr>
+      <p>
+        {{ todo.content }}
+      </p>
+      <a href="{% url 'todo:edit' todo.id %}" class="btn btn-info">Edit</a>
+      <a href="{% url 'todo:delete' todo.id %}" class="btn btn-info">Delete</a>
+    </div>
+  </div>
+
+  {% csrf_token %}
+
+  <script>
+    function delete_todo(pk) {
+      var csrf = jQuery("[name=csrfmiddlewaretoken]").val();
+      $.post('delete/', {csrfmiddlewaretoken: csrf}, function (data) {
+        if (data === 'success') {
+          window.location = '{% url "todo:index" %}';
+        } else {
+          alert('Delete fail');
+        }
+      })
+    }
+  </script>
+{% endblock %}
