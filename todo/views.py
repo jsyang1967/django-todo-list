@@ -1,6 +1,6 @@
 from django.http import HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.contrib.auth.decorators import login_required
 from .models import Todo
 from .forms import TodoModelForm, DeleteConfirmForm
 
@@ -9,7 +9,7 @@ def index(request):
     todos = Todo.objects.all()
     return render(request, 'todo/index.html', {'todos': todos})
 
-
+@login_required
 def new(request):
     form = TodoModelForm(request.POST or None)
     if form.is_valid():
